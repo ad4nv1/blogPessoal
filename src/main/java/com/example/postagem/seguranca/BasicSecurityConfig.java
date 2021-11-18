@@ -27,9 +27,6 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter{
 		.password(passwordEncoder().encode("boaz"))
 		.authorities("ROLE_USER");
 	}
-
-		//auth.inMemoryAuthentication()
-		//.withUser("boaz").password(passwordEncoder().encode("adan")).authorities("ROLE_ADMIN");}
 	
 	
 	@Bean
