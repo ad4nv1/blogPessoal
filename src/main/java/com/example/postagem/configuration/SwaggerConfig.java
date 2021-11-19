@@ -1,4 +1,4 @@
-package configuration;
+package com.example.postagem.configuration;
 
 import  java.util.ArrayList;
 import  java.util.List;
