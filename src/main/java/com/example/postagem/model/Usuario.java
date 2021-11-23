@@ -1,7 +1,9 @@
 package com.example.postagem.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,59 +12,76 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "tb_usuarios")
+@Table(name = "tb_usuario")
 public class Usuario {
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	@NotNull(message = "O atributo nome é obrigatório")
-	@Size(min = 5, max = 100, message = "O atributo nome deve ter no mínimo 05 e no máximo 100 caracteres")
+	private Long id;
+	
+	@NotNull
+	@Size(min = 2, max = 100)
 	private String nome;
-	@NotNull(message = "O atributo usuário é obrigatório")
-	@NotBlank(message = "O atributo usuário não pode ser vazio")
-	@Email(message = "O atributo usuário deve ser um email")
+	
+	@NotNull
+	@Size(min = 5, max = 100)
 	private String usuario;
-	@NotNull(message = "O atributo senha é obrigatório")
-	@Size(min = 8, message = "O atributo senha deve ter no mínimo 8 caracteres")
+	
+	private String foto;
+	
+	@NotNull
+	@Size(min = 5, max = 100)
 	private String senha;
+
+	@OneToMany(mappedBy = "usuario", cascade =  CascadeType.REMOVE)
+	@JsonIgnoreProperties({"usuario"})
+	private List<Postagem> postagem;
+
 	@Column(name = "dt_nascimento")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataNascimento;
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties("usuario")
-	private List<Postagem> postagem;
+	
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
 
-// Primeiro método Construtor - Com os atributos
-	public Usuario(long id, String nome, String usuario, String senha, LocalDate dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public Usuario() {}
+	
+	public Usuario(Long id, String nome, String usuario, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.usuario = usuario;
 		this.senha = senha;
-		this.dataNascimento = dataNascimento;
+	}
+	public Usuario(String nome, String usuario, String senha) {
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
 	}
 
-// Segundo método Construtor - Sem os atributos
-	public Usuario() {
+
+	public Long getId() {
+		return id;
 	}
 
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	public String getNome() {
-		return this.nome;
+		return nome;
 	}
 
 	public void setNome(String nome) {
@@ -70,7 +89,7 @@ public class Usuario {
 	}
 
 	public String getUsuario() {
-		return this.usuario;
+		return usuario;
 	}
 
 	public void setUsuario(String usuario) {
@@ -78,26 +97,27 @@ public class Usuario {
 	}
 
 	public String getSenha() {
-		return this.senha;
+		return senha;
 	}
 
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
-	public LocalDate getDataNascimento() {
-		return this.dataNascimento;
+	
+	public String getFoto() {
+		return foto;
 	}
 
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
-
+	
 	public List<Postagem> getPostagem() {
-		return this.postagem;
+		return postagem;
 	}
 
 	public void setPostagem(List<Postagem> postagem) {
 		this.postagem = postagem;
-	}
+	}	
+
 }
