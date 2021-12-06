@@ -1,11 +1,10 @@
 package com.example.postagem.model;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+//import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
+//import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+//import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -37,6 +36,8 @@ public class Usuario {
 	
 	private String foto;
 	
+	private String tipo;
+	
 	@NotNull
 	@Size(min = 5, max = 100)
 	private String senha;
@@ -45,17 +46,17 @@ public class Usuario {
 	@JsonIgnoreProperties({"usuario"})
 	private List<Postagem> postagem;
 
-	@Column(name = "dt_nascimento")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dataNascimento;
+	//@Column(name = "dt_nascimento")
+	//@JsonFormat(pattern = "yyyy-MM-dd")
+	//private LocalDate dataNascimento;
 	
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
+	//public LocalDate getDataNascimento() {
+	//	return dataNascimento;
+	//}
 
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
+	//public void setDataNascimento(LocalDate dataNascimento) {
+	//	this.dataNascimento = dataNascimento;
+	//}
 
 	public Usuario() {}
 	
@@ -111,6 +112,15 @@ public class Usuario {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	
 	public List<Postagem> getPostagem() {
 		return postagem;
