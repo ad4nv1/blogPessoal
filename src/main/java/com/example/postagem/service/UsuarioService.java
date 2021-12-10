@@ -16,18 +16,18 @@ import com.example.postagem.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-
+	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-
+	
 	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
-
+	
 		usuario.setSenha(criptografarSenha(usuario.getSenha()));
 		return Optional.of(usuarioRepository.save(usuario));
 	}
-
+	
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
 			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
@@ -41,20 +41,20 @@ public class UsuarioService {
 			return Optional.of(usuarioRepository.save(usuario));
 		} 
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);		
-	}	
+	}
 	
 	public Optional<UserLogin> logarUsuario(Optional<UserLogin> usuarioLogin) {
 		Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
 
 		if (usuario.isPresent()) {
 			if (compararSenhas(usuarioLogin.get().getSenha(), usuario.get().getSenha())) {
+				usuarioLogin.get().setToken(generatorBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha()));
 				usuarioLogin.get().setId(usuario.get().getId());				
 				usuarioLogin.get().setNome(usuario.get().getNome());
 				usuarioLogin.get().setFoto(usuario.get().getFoto());
 				usuarioLogin.get().setTipo(usuario.get().getTipo());
 				usuarioLogin.get().setSenha(usuario.get().getSenha());
-				usuarioLogin.get().setToken(generatorBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha()));
-
+				
 				return usuarioLogin;
 			}
 		}		
@@ -66,7 +66,7 @@ public class UsuarioService {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String senhaEncoder = encoder.encode(senha);
 		return senhaEncoder;
-	}
+	}	
 	
 	private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
