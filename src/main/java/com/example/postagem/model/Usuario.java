@@ -42,21 +42,10 @@ public class Usuario {
 	@Size(min = 5, max = 100)
 	private String senha;
 
-	@OneToMany(mappedBy = "usuario", cascade =  CascadeType.REMOVE)
-	@JsonIgnoreProperties({"usuario"})
+	@OneToMany(mappedBy = "usuario", cascade =  CascadeType.ALL)
+	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
 
-	//@Column(name = "dt_nascimento")
-	//@JsonFormat(pattern = "yyyy-MM-dd")
-	//private LocalDate dataNascimento;
-	
-	//public LocalDate getDataNascimento() {
-	//	return dataNascimento;
-	//}
-
-	//public void setDataNascimento(LocalDate dataNascimento) {
-	//	this.dataNascimento = dataNascimento;
-	//}
 
 	public Usuario() {}
 	
@@ -89,13 +78,7 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
+	
 
 	public String getSenha() {
 		return senha;
@@ -105,6 +88,15 @@ public class Usuario {
 		this.senha = senha;
 	}
 	
+	
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
 	public String getFoto() {
 		return foto;
 	}
@@ -129,5 +121,7 @@ public class Usuario {
 	public void setPostagem(List<Postagem> postagem) {
 		this.postagem = postagem;
 	}	
+	
+	
 
 }

@@ -23,38 +23,38 @@ import com.example.postagem.model.Postagem;
 import com.example.postagem.repository.PostagemRepository;
 
 @RestController
-@RequestMapping("/postagens")
-@CrossOrigin(value = "*", allowedHeaders = "*")
+@RequestMapping("/Postagem")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
-	
-	
-	
 	
 	@Autowired
 	private PostagemRepository repository;
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Postagem>> findAllPostagens(){
+	public ResponseEntity<List<Postagem>> getAllPostagem(){
 		return ResponseEntity.ok(repository.findAll());
 	}
 	
+	
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Postagem> findById(@PathVariable("id") Long id){
-		return ResponseEntity.ok(repository.findById(id).get());
+	public ResponseEntity<Optional<Postagem>> findByIdPostagem(@PathVariable("id") Long id){
+		return ResponseEntity.ok(repository.findById(id));
 	}
 	
 	
-	
-	@GetMapping("/porTitulo/{titulo}")
-	public ResponseEntity<Postagem> getByTitulo(@PathVariable("titulo") String titulo){
-		return ResponseEntity.ok(repository.getByTituloContainingIgnoreCase(titulo));
+	@GetMapping("/titulo/{titulo}")
+	public ResponseEntity<List<Postagem>> getByTitulo(@PathVariable("titulo") String titulo){
+		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(titulo));
 	}
+	
 	
 	@PostMapping
 	public ResponseEntity<Postagem> post (@Valid @RequestBody Postagem postagem){
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(postagem));
 	}
+	
 	
 	@PutMapping
 	public ResponseEntity<Postagem> put (@Valid @RequestBody Postagem postagem){
@@ -64,11 +64,15 @@ public class PostagemController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Long id) {
+	public void delete(@PathVariable long id) {
 		Optional<Postagem> post = repository.findById(id);
         if(post.isEmpty())
 	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         repository.deleteById(id);
+        
 	}
 	
+	
+	
+
 }

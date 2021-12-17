@@ -23,45 +23,47 @@ import com.example.postagem.model.Tema;
 import com.example.postagem.repository.TemaRepository;
 
 @RestController
-@CrossOrigin(origins ="*", allowedHeaders = "*")
 @RequestMapping("/tema")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TemaController {
 	
 	@Autowired
 	private TemaRepository repository;
 	
 	@GetMapping
-	public ResponseEntity<List<Tema>> getAll(){
+	public ResponseEntity<List<Tema>> getAllTema(){
 		return ResponseEntity.ok(repository.findAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Tema> getById(@PathVariable("id") Long id){
-		return repository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<Optional<Tema>> findByIdTema(@PathVariable("id") Long id){
+		return ResponseEntity.ok(repository.findById(id));
 	}
 	
-	@GetMapping("/nome/{nome}")
-	public ResponseEntity<List<Tema>> getByName(@PathVariable("nome") String nome){
-		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(nome));
+	@GetMapping("/titulo/{titulo}")
+	public ResponseEntity<List<Tema>> getByTitulo(@PathVariable("titulo") String titulo){
+		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(titulo));
 	}
 	
+
 	@PostMapping
-	public ResponseEntity<Tema> post(@Valid @RequestBody Tema tema){
+	public ResponseEntity<Tema> post (@Valid @RequestBody Tema tema){
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema));
 	}
 	
 	@PutMapping
-	public ResponseEntity<Tema> put(@Valid @RequestBody Tema tema){
+	public ResponseEntity<Tema> put (@Valid @RequestBody Tema tema){
 		return repository.findById(tema.getId())
 		        .map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema)))
 		        .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable("id") Long id) {
+	public void delete(@PathVariable long id) {
 		Optional<Tema> tema = repository.findById(id);
         if(tema.isEmpty())
 	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         repository.deleteById(id);
 	}
+
 }

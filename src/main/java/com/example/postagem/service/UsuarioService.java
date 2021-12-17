@@ -79,3 +79,4 @@ public class UsuarioService {
 		return "Basic " + new String(structureBase64);
 	}
 }
+ 
